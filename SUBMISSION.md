@@ -95,15 +95,15 @@ Description: The Azure Portal repository list confirms that all three backend mi
 
 ### Evidence 3.1: Completed Function Code
 
-TODO: Link to your completed file: `[function_app.py](function-app/function_app.py)`.
+[function_app.py](function-app/function_app.py)
 
-Description: TODO: Summarize how your orchestrator chains validation and report generation.
+Description: TODO: The orchestrator receives an order payload, awaits the result of `validate_activity`, and conditionally triggers `report_activity` only if the validation is successful.
 
 ### Evidence 3.2: Local Function Handler Listing
 
-TODO: Embed screenshot of `func start` showing the HTTP starter, orchestrator, and activities.
+<img alt="Local function handler listing" src="./docs/screenshots/Task 3 func start showing all four Durable handlers registered (starter, orchestrator, validate_activity, report_activity).png">
 
-Description: TODO: Explain that the Durable Functions runtime discovered your handlers.
+Description: Running `func start` locally confirms that the Durable Functions runtime successfully discovered and registered all four required function handlers.
 
 ---
 
