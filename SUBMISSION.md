@@ -137,39 +137,40 @@ Description: The `Failed` status is fully expected at this stage because the orc
 
 ### Evidence 5.1: AKS Cluster
 
-TODO: Embed screenshot of AKS overview showing `aks-<rollnum>` succeeded.
+<img alt="AKS Cluster Overview" src="./docs/screenshots/Task 5 AKS overview showing aks-26100346 succeeded.png">
 
-Description: TODO: State node count, node size, region, and resource group.
+Description: The cluster `aks-26100346` is deployed in the UK West region with a 1-node pool in the `rg-sp26-26100346` resource group.
 
 ### Evidence 5.2: Kubernetes Nodes and Pods
 
-TODO: Embed screenshot of `kubectl get nodes` and `kubectl get pods`.
+<img alt="kubectl get nodes" src="./docs/screenshots/Task 5 kubectl get nodes showing your cluster is running.png">
+<img alt="kubectl get pods" src="./docs/screenshots/Task 5 kubectl get pods showing the validator pod is Running.png">
 
-Description: TODO: Explain that the validator pod is scheduled and running.
+Description: The `kubectl` output confirms the AKS node is ready and the `validate-api` pod is successfully scheduled and running without errors.
 
 ### Evidence 5.3: Kubernetes Service
 
-TODO: Embed screenshot of `kubectl get service validate-service`.
+<img alt="kubectl get services" src="./docs/screenshots/Task 5 kubectl get service showing the assigned EXTERNAL-IP.png">
 
-Description: TODO: Identify the external IP and port exposed by the LoadBalancer.
+Description: The `validate-service` LoadBalancer successfully exposed the pod on the external IP `20.58.117.221` at port `8080`.
 
 ### Evidence 5.4: Validator API Tests
 
-TODO: Embed screenshot of `curl /health`, a valid `curl /validate`, and an invalid `curl /validate`.
+<img alt="Validator curl tests" src="./docs/screenshots/Task 5 curl health and curl validate both run.png">
 
-Description: TODO: Explain the accepted path and the `qty > 100` rejection rule.
+Description: The API responds successfully to `/health` checks, accepts valid JSON payloads, and correctly implements the rejection rule for any order where `qty > 100`.
 
 ### Evidence 5.5: Function App `VALIDATE_URL`
 
-TODO: Embed screenshot showing the Function App application setting `VALIDATE_URL`.
+<img alt="Function App Environment Variables" src="./docs/screenshots/Task 5 Function App Application Setting VALIDATE_URL.png">
 
-Description: TODO: Explain how the Durable Function reaches the AKS validator.
+Description: The Durable Function orchestrator dynamically reaches the AKS validator using the `VALIDATE_URL` environment variable configured with the LoadBalancer's IP.
 
 ### Evidence 5.6: AKS Idle Behavior
 
-TODO: Embed AKS metrics screenshot and/or `kubectl` output after the service is idle.
+<img alt="AKS Idle Metrics" src="./docs/screenshots/Task 5 AKS idle metrics.png">
 
-Description: TODO: Explain that the AKS node remains running even when there are no orders.
+Description: As shown by the metrics, the AKS node remains running and incurs continuous compute costs even when there are no active validation orders being processed.
 
 ---
 
