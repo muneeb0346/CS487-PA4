@@ -29,38 +29,35 @@ Copy this file to <code style="color:#111827;background:#ddd6fe;padding:2px 4px;
 - CLI screenshots must show the command and output.
 - Mask secrets such as function keys, ACR passwords, and storage connection strings.
 
-
 ## Task 1: App Service Web App (15 points)
 
 ### Evidence 1.1: Forked Repository
 
 <img alt="Forked Repository" src="./docs/screenshots/Task 1 forked GitHub repository.png">
 
-Description: This screenshot shows that I have forked the starter repository and connected it to my GitHub account. The repository is named `CS487-PA4` and is located under my GitHub username `muneeb0346`. This fork will be used to deploy the frontend of the TaskFlow pipeline to Azure App Service.
+Description: This is my working GitHub fork of the CS487-PA4 starter repository containing the required project structure.
 
 ### Evidence 1.2: App Service Overview
 
 <img alt="App Service overview" src="./docs/screenshots/Task 1 Web App overview showing Running status.png">
 
-Description: This screenshot shows the overview of the App Service, indicating it is running. The resource group is `rg-sp26-26100346`, the region is `uaenorth`, the runtime is `.NET Core 3.1`, and the public URL is `https://webapp-26100346.azurewebsites.net`.
+Description: The Web App is running in the rg-sp26-26100346 resource group in Sweden Central using the Node 22 LTS runtime, accessible at pa4-26100346.azurewebsites.net.
 
 ### Evidence 1.3: Deployment Center / GitHub Actions
 
 <img alt="Deployment Center showing GitHub Actions workflow" src="./docs/screenshots/Task 1 Deployment Center showing GitHub configuration.png">
 
-Description: This screenshot shows the Deployment Center configuration for the App Service, confirming that it is set up to deploy from the `main` branch of my forked GitHub repository. The GitHub Actions workflow is configured to automatically deploy the frontend code whenever changes are pushed to the `main` branch.
+Description: The Web App's Deployment Center is configured to use GitHub Actions for CI/CD, automatically pulling from the main branch of my muneeb0346/CS487-PA4 fork.
 
 ### Evidence 1.4: Live Web UI
 
 <img alt="Live Web UI" src="./docs/screenshots/Task 1 dashboard loading in a browser.png">
 
-Description: This screenshot shows the App Service serving the frontend successfully in a web browser.
-
-### Evidence 1.5: Web App Application Settings
+Description: The TaskFlow frontend is successfully deployed and accessible via the App Service public URL.
 
 <img alt="Web App application settings" src="./docs/screenshots/Task 1 Application Settings configured.png">
 
-Description: This screenshot shows the application settings for the Web App, confirming that `FUNCTION_START_URL` and `FUNCTION_STATUS_URL` are configured with the correct URLs to interact with the Durable Function backend.
+Description: The application settings FUNCTION_START_URL and FUNCTION_STATUS_URL are temporarily set to "PENDING" until the backend Function App is deployed.
 
 ---
 
@@ -68,21 +65,29 @@ Description: This screenshot shows the application settings for the Web App, con
 
 ### Evidence 2.1: ACR Overview
 
-TODO: Embed screenshot of `crpa4<rollnum>` overview.
+<img alt="ACR overview" src="./docs/screenshots/Task 2 ACR overview in the portal showing Succeeded.png">
 
-Description: TODO: Identify the registry SKU and resource group.
+Description: The pa426100346 Azure Container Registry was successfully provisioned using the Basic SKU in the rg-sp26-26100346 resource group.
 
 ### Evidence 2.2: Docker Builds
 
-TODO: Embed screenshot showing successful local builds for `validate-api`, `report-job`, and `func-app`.
+<img alt="Docker build output" src="./docs/screenshots/Task 2 successful Docker builds for all three images.png">
 
-Description: TODO: Explain which folder produced each image.
+Description: The validate-api, report-job, and func-app Docker images were successfully built locally from their respective project folders.
+
+<img alt="Local Test of validate-api" src="./docs/screenshots/Task 2 local test of the validator (POST validate returning JSON).png">
+
+Description: The validate-api container was tested locally via a POST request to confirm it successfully validates order payloads before pushing to Azure.
 
 ### Evidence 2.3: ACR Repositories
 
-TODO: Embed screenshot or CLI output showing all three repositories in ACR.
+<img alt="ACR repositories" src="./docs/screenshots/Task 2 successful pushes to ACR for all three images.png">
 
-Description: TODO: Confirm `validate-api:v1`, `report-job:v1`, and `func-app:v1` were pushed.
+Description: The validate-api:v1, report-job:v1, and func-app:v1 images were successfully tagged and pushed to the remote Azure Container Registry.
+
+<img alt="ACR repository list" src="./docs/screenshots/Task 2 ACR repository list showing validate-api, report-job, and func-app.png">
+
+Description: The Azure Portal repository list confirms that all three backend microservice images are now securely stored in the container registry.
 
 ---
 
