@@ -111,21 +111,25 @@ Description: Running `func start` locally confirms that the Durable Functions ru
 
 ### Evidence 4.1: Function App Container Configuration
 
-TODO: Embed screenshot showing the Function App uses your `func-app:v1` image from ACR.
+<img alt="Function App Deployment Center" src="./docs/screenshots/Task 4 Function App in Azure Portal showing the container image configuration.png">
 
-Description: TODO: State the Function App name and image URI.
+Description: The Function App `pa4-26100346-func` is successfully configured to pull the `func-app:v1` container image from the `pa426100346` Azure Container Registry.
+
+<img alt="Functions List" src="./docs/screenshots/Task 4 Functions list in the Portal showing http_starter, my_orchestrator, validate_activity, report_activity.png">
+
+Description: The Azure Portal confirms that the container deployed successfully and registered the four required Durable Function handlers.
 
 ### Evidence 4.2: Orchestration Smoke Test
 
-TODO: Embed screenshot of the `curl` output that starts an orchestration and returns status URLs.
+<img alt="Curl output" src="./docs/screenshots/Task 4 curl output showing the orchestration started (instance id and statusQueryGetUri visible).png">
 
-Description: TODO: Explain what the returned `id` and `statusQueryGetUri` prove.
+Description: The returned `id` and `statusQueryGetUri` prove that the HTTP starter successfully received the payload and triggered the Durable Orchestrator.
 
 ### Evidence 4.3: Expected Failed Status Before Downstream Wiring
 
-TODO: Embed screenshot of the status query JSON showing the expected failure before `VALIDATE_URL` is configured.
+<img alt="Status query JSON" src="./docs/screenshots/Task 4 status query URL JSON showing Failed status at this stage.png">
 
-Description: TODO: Explain why this failure is expected at this stage.
+Description: The `Failed` status is fully expected at this stage because the orchestrator attempts to trigger `validate_activity`, but the `VALIDATE_URL` app setting has not been configured to point to the AKS cluster yet.
 
 ---
 
