@@ -178,39 +178,43 @@ Description: As shown by the metrics, the AKS node remains running and incurs co
 
 ### Evidence 6.1: Blob Container
 
-TODO: Embed screenshot of the `reports` blob container.
+<img alt="Blob Container Created" src="./docs/screenshots/Task 6 reports blob container after creation.png">
 
-Description: TODO: Explain where generated PDFs are stored.
+Description: The `reports` container was successfully created via the Azure CLI to serve as the storage destination for all generated PDF receipts.
 
 ### Evidence 6.2: Manual ACI Run
 
-TODO: Embed screenshot of `az container show` for `ci-report-test`.
+<img alt="ACI Succeeded" src="./docs/screenshots/Task 6 az container show output with state Succeeded after the manual run.png">
 
-Description: TODO: State the final container state and why the job exits.
+Description: The container state transitioned to `Succeeded`. Because the restart policy is set to `Never`, the ACI correctly shuts down and stops incurring compute billing immediately after the Python script finishes its execution.
 
 ### Evidence 6.3: ACI Logs
 
-TODO: Embed screenshot of `az container logs`.
+<img alt="ACI Logs" src="./docs/screenshots/Task 6 az container logs showing the report-job's own output (PDF generation lines).png">
 
-Description: TODO: Explain what the report job printed after generating and uploading the PDF.
+Description: The container logs confirm that the batch job successfully parsed the injected environment variables, generated the report, and printed "Uploaded TEST-001.pdf to reports container".
 
 ### Evidence 6.4: Generated PDF
 
-TODO: Embed screenshot showing `TEST-001.pdf` in Blob Storage or opened from Blob Storage.
+<img alt="Blob List" src="./docs/screenshots/Task 6 generated PDF listed in the reports blob container.png">
 
-Description: TODO: Explain how this proves the ACI wrote to storage.
+Description: Running `az storage blob list` confirms that `TEST-001.pdf` was successfully uploaded and physically resides in the Azure Blob Storage container.
 
 ### Evidence 6.5: Function App Managed Identity and IAM
 
-TODO: Embed screenshots of system-assigned identity enabled and Contributor role assignment on your resource group.
+<img alt="Function App User Assigned Identity" src="./docs/screenshots/Task 6 Function App&apos;s Identity blade showing the User-assigned identity (mi-pa4-26100346) attached.png">
 
-Description: TODO: Explain why the Function App needs this permission to create ACIs.
+Description: The `mi-pa4-26100346` User-Assigned Managed Identity is successfully attached to the Function App, granting it the necessary RBAC permissions to provision ACI instances dynamically without hardcoding admin credentials.
 
 ### Evidence 6.6: Report App Settings
 
-TODO: Embed screenshot of `REPORT_*`, `ACR_*`, `STORAGE_CONN`, and `SUBSCRIPTION_ID` settings.
+<img alt="Function App Report Settings" src="./docs/screenshots/Task 6 Function App Application Settings showing the REPORT_, ACR_, and STORAGE_ACCOUNT_URL values.png">
 
-Description: TODO: Explain what each group of settings is used for. Mask secrets.
+Description: 
+* `REPORT_*` defines the target region and resource group for the dynamically created ACIs.
+* `ACR_*` provides the credentials required for the ACI to pull the container image. 
+* `STORAGE_ACCOUNT_URL` dictates the Azure Blob endpoint where the generated PDFs should be uploaded. 
+* `SUBSCRIPTION_ID` and `AZURE_CLIENT_ID` allow the Azure SDK within the Durable Function to authenticate seamlessly using the attached managed identity.
 
 ---
 
