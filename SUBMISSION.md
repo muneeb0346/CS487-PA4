@@ -260,30 +260,40 @@ Description: An invalid order (`qty > 100`) is rejected by AKS. The orchestrator
 
 ### Evidence 8.1: Architecture Diagram
 
-TODO: Embed your architecture diagram from `docs/`.
+<img alt="Architecture Diagram" src="./docs/artchitecture_diagram.png">
 
-Description: TODO: Confirm that it shows GitHub, App Service, Durable Function, AKS, ACI, Blob Storage, ACR, and IAM.
+Description: This diagram illustrates the complete end-to-end architecture, confirming the GitHub CI/CD pipeline to the App Service frontend, the Durable Function orchestrating the workflow, the synchronous HTTP call to the AKS validator, the ephemeral ACI spawn for the report job, output to Blob Storage, and the central ACR providing container images to all compute services.
 
 ### Question 8.2: Service Selection
 
-TODO: In 3-4 sentences each, explain why TaskFlow uses App Service, Durable Functions, AKS, and ACI for their specific roles.
+**App Service:** App Service is the right tool for the Web App because it is designed to host long-running, stateful frontend UIs with a stable, predictable cost (B1 plan). It seamlessly integrates with GitHub Actions for out-of-the-box CI/CD, eliminating the need to manage underlying servers while keeping the dashboard continuously accessible. 
+
+**Durable Functions:** This service is essential for the orchestrator because standard serverless functions are not designed for long-running, asynchronous tasks. Durable Functions checkpoint their state between steps, allowing the workflow to sleep while waiting for the ACI job to finish without hitting HTTP timeouts. It provides a clean, code-based way to coordinate multiple downstream services reliably.
+
+**Azure Kubernetes Service (AKS):** AKS is chosen for the validator because it requires a persistent, long-lived HTTP endpoint that must be immediately available for every order. While heavier to operate than serverless options, it represents the industry standard for always-on enterprise microservices and allows for precise declarative configuration of the LoadBalancer and pod scaling.
+
+**Azure Container Instances (ACI):** ACI is the perfect fit for the report generator because it is a short-lived, one-shot batch job. It spins up a container on-demand, executes the PDF generation, and terminates immediately upon completion. This operational model ensures we only pay for the exact seconds of compute used per order, avoiding the wasted idle costs of an always-on cluster.
 
 ### Question 8.3: ACI vs AKS
 
-TODO: Compare idle behavior, cost behavior, and operational model for AKS and ACI using your screenshots.
+When the AKS cluster is idle for 10 minutes, the underlying `Standard_B2s` virtual machine node remains fully operational and continues to incur continuous hourly compute costs to maintain the persistent service endpoint. In contrast, "idle" does not exist for ACI in this architecture; the container instance is completely ephemeral, created dynamically per order and deleted upon completion, meaning it costs absolutely nothing when no orders are processing. If a malicious user spammed the Submit button 1000 times in a minute, ACI would incur the most cost because the orchestrator would provision 1000 distinct container instances, each billing for its startup and execution time, whereas AKS would simply route the high traffic to the existing, already-paid-for node.
 
 ### Question 8.4: Durable Functions vs Plain HTTP
 
-TODO: Explain at least two problems that Durable Functions solves for this sequential workflow.
+If this pipeline were implemented using plain HTTP-triggered functions, we would immediately face function timeout limits, as the ACI provisioning and PDF generation can take upwards of a minute, causing a standard HTTP connection to drop. Furthermore, plain HTTP functions lack state persistence; if the report generation step failed, all context would be lost, requiring the user to submit the order again and forcing the validator to needlessly re-execute, whereas Durable Functions checkpoint their progress and can resume exactly where they left off.
 
 ### Question 8.5: Cost Review
 
-TODO: Embed Cost Management screenshot scoped to your resource group.
+<img alt="Cost Management Analysis" src="./docs/screenshots/Task 8 Cost analysis.png">
 
-Description: TODO: Identify the most expensive resource and explain why.
+Description: Based on the Cost Management analysis scoped to `rg-sp26-26100346`, the single most expensive resource is the App Service Plan (`pa4-26100346`) at $1.66, followed by the Container Registry at $1.04. The App Service Plan is the primary cost driver because it was provisioned early in the assignment and runs 24/7 to host both the Web App frontend and the containerized Function App. The AKS cluster was surprisingly cheaper ($0.45), likely because it was provisioned later in the project timeline and ran for a shorter overall duration.
 
 ### Question 8.6: Challenges Faced
 
-TODO: Describe at least two real issues you hit and how you debugged them.
+**Challenge 1: ACR Authentication via Managed Identity**
+Initially, the Function App was throwing a `403 Forbidden` error when trying to spawn the ACI container because it could not pull the `report-job` image from the ACR. I resolved this by ensuring the `mi-pa4-26100346` User-Assigned Managed Identity was properly attached in the Function App's Identity blade, and I learned that I had to wait a few minutes for the RBAC role assignments to propagate across Azure before the SDK could authenticate successfully.
+
+**Challenge 2: AKS LoadBalancer Pending State**
+During the deployment of the `validate-api` to AKS, the service's `EXTERNAL-IP` was stuck in a `<pending>` state for an extended period. I debugged this by checking the cluster events using `kubectl get events`, verifying that the service type was correctly set to `LoadBalancer`, and waiting for Azure to provision the public IP address in the Sweden Central region, after which the IP was successfully assigned and the health endpoint became reachable.
 
 ---
