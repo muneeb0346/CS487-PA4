@@ -22,4 +22,4 @@ spec:
             cpu: "250m"
             memory: "500Mi"
       imagePullSecrets:
-      - name: acr-secret
+      - name: acr-auth

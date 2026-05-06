@@ -222,27 +222,37 @@ Description:
 
 ### Evidence 7.1: Web App Wiring
 
-TODO: Embed screenshot showing `FUNCTION_START_URL` and `FUNCTION_STATUS_URL` configured on the Web App.
+<img alt="Web App Application Settings" src="./docs/screenshots/Task 7 screenshot showing FUNCTION_START_URL and FUNCTION_STATUS_URL configured on the Web App.png">
 
 Description: TODO: Explain how the frontend starts and polls the Durable orchestration.
 
 ### Evidence 7.2: Happy Path UI
 
-TODO: Embed screenshots of the form before submit, Running status, and Completed status with report URL.
+<img alt="Happy Path UI" src="./docs/screenshots/Task 7 happy-path before submit.png">
+<img alt="Happy Path UI" src="./docs/screenshots/Task 7 happy-path Running status.png">
+<img alt="Happy Path UI" src="./docs/screenshots/Task 7 happy-path Completed status.png">
+<img alt="Happy Path UI" src="./docs/screenshots/Task 7 happy-path generated PDF link.png">
 
 Description: TODO: Explain the valid order payload and final result.
 
 ### Evidence 7.3: Backend Participation
 
-TODO: Embed screenshots showing Function App invocation, AKS validator evidence, ACI evidence, and Blob PDF evidence.
+<img alt="Backend Logs" src="./docs/screenshots/Task 7 participation Function App invocation.png">
+<img alt="Backend Logs" src="./docs/screenshots/Task 7 participation ACI evidence.png">
+<img alt="Blob List" src="./docs/screenshots/Task 7 participation Blob PDF evidence.png">
+<img alt="Report Job Logs" src="./docs/screenshots/Task 7 participation AKS validator evidence.png">
 
 Description: TODO: Trace the same order ID across services.
 
 ### Evidence 7.4: Reject Path UI
 
-TODO: Embed screenshot of an order with `qty > 100` being rejected.
+<img alt="Reject Path UI" src="./docs/screenshots/Task 7 rejection-path Rejected status.png">
+<img alt="Reject Path UI" src="./docs/screenshots/Task 7 rejection-path Function App Invocation.png">
+<img alt="Reject Path UI" src="./docs/screenshots/Task 7 rejection-path no ACI evidence.png">
 
 Description: TODO: Explain why no report ACI should be created for this order.
+
+<img alt="All Resources" src="./docs/screenshots/Task 7 resource group showing all deployed resources.png">
 
 ---
 
